@@ -1,0 +1,25 @@
+" Para números de línea relativos
+set number relativenumber
+set nu rnu
+
+" Para indentar con 4 espacios, y no con tab
+set expandtab
+set shiftwidth=2
+set softtabstop=2
+
+" Para búsqueda de archivos
+set wildmenu
+set hidden
+
+" Para highlightear las búsquedas, y que sea case insensitive a menos que haya
+" una mayúscula
+set ignorecase
+set smartcase
+set hlsearch
+
+" Para que las ventanas nuevas se abran a la derecha y abajo
+set splitbelow
+set splitright
+
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! w !sudo tee > /dev/null %
