@@ -14,6 +14,9 @@ set autoindent
 set wildmenu
 set hidden
 
+" Para cambiar de directorio automáticamente
+set autochdir
+
 " Para highlightear las búsquedas, y que sea case insensitive a menos que haya
 " una mayúscula
 set ignorecase
@@ -29,6 +32,7 @@ cmap w!! w !sudo tee > /dev/null %
 
 " Map to run current file as python script
 cmap rpy !python % 
+map <F2> <Esc>:w<CR>:!python %<CR>
 
 " Plugins
 " plug.vim install
@@ -44,5 +48,17 @@ call plug#begin('~/.vim/plugged')
 Plug 'ekalinin/dockerfile.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'bling/vim-airline'
+Plug 'dense-analysis/ale'
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 
 call plug#end()
+
+let g:ale_linters = {
+  \   'python': ['pyls', 'pylint', 'flake8']
+\}
+
+let g:deoplete#enable_at_startup = 1
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif
+
