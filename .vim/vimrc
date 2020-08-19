@@ -9,6 +9,7 @@ set softtabstop=2
 
 " Autoindent
 set autoindent
+set smartindent
 
 " Para búsqueda de archivos
 set wildmenu
@@ -34,6 +35,18 @@ cmap w!! w !sudo tee > /dev/null %
 cmap rpy !python % 
 map <F2> <Esc>:w<CR>:!python %<CR>
 
+" Para no ver archivos swp en netrw
+let g:netrw_list_hide= '.*\.swp$'
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" archivos .conf.template con sintaxis nginx
+autocmd BufNewFile,BufRead *.conf.template set syntax=nginx
+
 " Plugins
 " plug.vim install
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -48,16 +61,13 @@ call plug#begin('~/.vim/plugged')
 Plug 'ekalinin/dockerfile.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'bling/vim-airline'
-Plug 'dense-analysis/ale'
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
+Plug 'chr4/nginx.vim'
+Plug 'evidens/vim-twig'
+
+" Use release branch (Recommend)
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 call plug#end()
-
-let g:ale_linters = {
-  \   'python': ['pyls', 'pylint', 'flake8']
-\}
 
 let g:deoplete#enable_at_startup = 1
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif
