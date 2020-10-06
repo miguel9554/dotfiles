@@ -105,6 +105,8 @@ bindsym $mod+a focus parent
 
 # "alt+tab"
 bindsym $mod+Tab workspace prev
+# switch between the current and the previously focused one
+bindsym $mod+b workspace back_and_forth
 
 # focus the child container
 #bindsym $mod+d focus child
