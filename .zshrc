@@ -11,6 +11,9 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
+# path
+export PATH=$HOME/bin:$PATH
+
 # alias
 alias ls='ls --color=auto'
 alias ll='ls -alFh'
