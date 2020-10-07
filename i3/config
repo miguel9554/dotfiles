@@ -107,6 +107,8 @@ bindsym $mod+a focus parent
 bindsym $mod+Tab workspace prev
 # switch between the current and the previously focused one
 bindsym $mod+b workspace back_and_forth
+# new workspace
+bindsym $mod+Shift+Return exec --no-startup-id ~/bin/i3-new-workspace
 
 # focus the child container
 #bindsym $mod+d focus child
