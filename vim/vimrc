@@ -38,6 +38,10 @@ cmap w!! w !sudo tee > /dev/null %
 cmap rpy !python % 
 map <F2> <Esc>:w<CR>:!python %<CR>
 
+" self explanatory
+set pastetoggle=<F3>
+
+
 " Para no ver archivos swp en netrw
 let g:netrw_list_hide= '.*\.swp$'
 
