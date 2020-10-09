@@ -1,0 +1,4 @@
+#!/bin/sh
+
+killall openvpn 
+ip route del 157.92.49.72/32 via 192.168.0.1 dev enp5s0 

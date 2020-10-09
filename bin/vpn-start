@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Agregamos una ruta para llegar a la VPN a través del router
+ip route add 157.92.49.72/32 via 192.168.0.1 dev enp5s0 
+openvpn --config /home/miguel/openvpn/mandrade.ovpn --log /home/miguel/openvpn/log.txt --verb 4 --daemon
