@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # sacado de https://github.com/lufterc/i3-new-workspace
 # Based on https://github.com/sandeel/i3-new-workspace
 # Script occupies free workspace with lowest possible number
