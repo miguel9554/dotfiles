@@ -39,7 +39,7 @@ disk "/mnt/data" {
 }
 
 load {
-        format = "load %1min%"
+        format = "load %1min"
 }
 
 memory {
