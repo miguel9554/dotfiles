@@ -1,1 +1,4 @@
 set guioptions none
+set pages-per-row 2
+map e feedkeys ":set first-page-column 1:1<Return>"
+map <C-e> feedkeys ":set first-page-column 1:2<Return>"
