@@ -15,8 +15,10 @@ compinit
 export PATH=$HOME/bin:$PATH
 
 # alias
-alias ls='ls --color=auto'
-alias ll='ls -alFh'
+source $HOME/.aliases
+
+source /usr/share/fzf/key-bindings.zsh
+source /usr/share/fzf/completion.zsh
 
 # prompt
 PROMPT='[%n@%F{blue}%m%f:%~] %# '

@@ -1,0 +1,13 @@
+alias ls='ls --color=auto'
+alias ll='ls -alFh'
+
+# Docker
+alias dcu='docker-compose up -d'
+alias dcub='docker-compose up -d --build'
+alias dcd='docker-compose down'
+alias dcl='docker-compose logs'
+alias dcp='docker-compose ps'
+alias dce='docker-compose exec'
+
+# k8
+alias k='kubectl'

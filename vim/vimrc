@@ -41,7 +41,6 @@ map <F2> <Esc>:w<CR>:!python %<CR>
 " self explanatory
 set pastetoggle=<F3>
 
-
 " Para no ver archivos swp en netrw
 let g:netrw_list_hide= '.*\.swp$'
 
@@ -71,17 +70,24 @@ Plug 'bling/vim-airline'
 Plug 'chr4/nginx.vim'
 Plug 'evidens/vim-twig'
 Plug 'lervag/vimtex'
+Plug 'ludovicchabant/vim-gutentags'
+
+" Track the engine.
 Plug 'sirver/ultisnips'
 
+" Snippets are separated from the engine. Add this if you want them:
+Plug 'honza/vim-snippets'
+
 " Use release branch (Recommend)
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim'
 
 call plug#end()
 
-let g:deoplete#enable_at_startup = 1
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif
+
+" Extensiones de COC
+let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-snippets', 'coc-vimtex']
 
 let g:tex_flavor = 'latex'
 let g:vimtex_view_general_viewer = 'zathura'
-
 
