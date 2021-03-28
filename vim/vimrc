@@ -17,6 +17,7 @@ set hidden
 
 " Para cambiar de directorio automáticamente
 set autochdir
+let g:netrw_keepdir=0
 
 " Para highlightear las búsquedas, y que sea case insensitive a menos que haya
 " una mayúscula
@@ -50,8 +51,18 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+" colors
+" set termguicolors
+if exists('+termguicolors')
+  let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
 " archivos .conf.template con sintaxis nginx
 autocmd BufNewFile,BufRead *.conf.template set syntax=nginx
+
+let g:ale_completion_enabled = 0
 
 " Plugins
 " plug.vim install
@@ -64,30 +75,81 @@ endif
 " plugins
 call plug#begin('~/.vim/plugged')
 
-Plug 'ekalinin/dockerfile.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'bling/vim-airline'
+
+Plug 'ekalinin/dockerfile.vim'
 Plug 'chr4/nginx.vim'
 Plug 'evidens/vim-twig'
+
 Plug 'lervag/vimtex'
 Plug 'ludovicchabant/vim-gutentags'
-
-" Track the engine.
 Plug 'sirver/ultisnips'
-
-" Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets'
 
-" Use release branch (Recommend)
-Plug 'neoclide/coc.nvim'
+Plug 'eslint/eslint'
+"Plug 'dense-analysis/ale'
+"Plug 'autozimu/LanguageClient-neovim', {
+    "\ 'branch': 'next',
+    "\ 'do': 'bash install.sh',
+    "\ }
+"if has('nvim')
+  "Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"else
+  "Plug 'Shougo/deoplete.nvim'
+  "Plug 'roxma/nvim-yarp'
+  "Plug 'roxma/vim-hug-neovim-rpc'
+"endif
+Plug 'natebosch/vim-lsc'
+"Plug 'neoclide/coc.nvim'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+Plug 'bluz71/vim-nightfly-guicolors'
+Plug 'ParamagicDev/vim-medic_chalk'
 
 call plug#end()
 
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif
 
-" Extensiones de COC
-let g:coc_global_extensions = ['coc-json', 'coc-git', 'coc-snippets', 'coc-vimtex']
+nnoremap <C-p> :GFiles<Cr>
 
 let g:tex_flavor = 'latex'
 let g:vimtex_view_general_viewer = 'zathura'
 
+let g:deoplete#enable_at_startup = 1
+
+" colorscheme nightfly
+colorscheme medic_chalk
+
+let g:lsc_server_commands = {
+ \  'javascript': {
+ \    'command': 'typescript-language-server --stdio',
+ \    'log_level': -1,
+ \    'suppress_stderr': v:true,
+ \  }
+ \}
+
+let g:LanguageClient_serverCommands = {
+    \ 'javascript': ['typescript-language-server --stdio'],
+    \ }
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\}
+" Complete default mappings are:
+let g:lsc_auto_map = {
+    \ 'GoToDefinition': '<C-}>',
+    \ 'GoToDefinitionSplit': ['<C-W>]', '<C-W><C-}>'],
+    \ 'FindReferences': 'gr',
+    \ 'NextReference': '<C-n>',
+    \ 'PreviousReference': '<C-p>',
+    \ 'FindImplementations': 'gI',
+    \ 'FindCodeActions': 'ga',
+    \ 'Rename': 'gR',
+    \ 'ShowHover': v:true,
+    \ 'DocumentSymbol': 'go',
+    \ 'WorkspaceSymbol': 'gS',
+    \ 'SignatureHelp': 'gm',
+    \ 'Completion': 'completefunc',
+    \}

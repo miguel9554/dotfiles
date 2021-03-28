@@ -1,5 +1,8 @@
 alias ls='ls --color=auto'
 alias ll='ls -alFh'
+alias ob='open-book'
+alias u='cd ..'
+alias vrc='vim ~/.vim/vimrc'
 
 # Docker
 alias dcu='docker-compose up -d'
@@ -11,3 +14,14 @@ alias dce='docker-compose exec'
 
 # k8
 alias k='kubectl'
+
+# ranger
+alias ranger='RANGER_LOAD_DEFAULT_RC=FALSE ranger'
+
+# alias
+alias gs='git status'
+alias gl='git log --oneline --graph'
+alias gd='git diff'
+alias ga='git add'
+alias gc='git commit -m'
+alias gp='git push'
