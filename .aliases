@@ -1,8 +1,16 @@
+# linux utils
 alias ls='ls --color=auto'
-alias ll='ls -alFh'
-alias ob='open-book'
+alias ll='ls -lh'
+alias lla='ll -a'
 alias u='cd ..'
+alias b='cd -'
+alias xo='xdg-open'
+alias ob='open-book'
+alias su='systemctl --user'
+
+# vim
 alias vrc='vim ~/.vim/vimrc'
+alias v='vim .'
 
 # Docker
 alias dcu='docker-compose up -d'
@@ -18,10 +26,11 @@ alias k='kubectl'
 # ranger
 alias ranger='RANGER_LOAD_DEFAULT_RC=FALSE ranger'
 
-# alias
+# git
 alias gs='git status'
-alias gl='git log --oneline --graph'
 alias gd='git diff'
 alias ga='git add'
-alias gc='git commit -m'
 alias gp='git push'
+alias gc='git commit -m'
+alias gl='git log --graph --all --decorate --oneline --pretty="%C(auto)%h  %C(auto)%d (%C(Green)%cr%C(reset))%x09 %C(Cyan)%an: %C(reset)%s"'
+alias gsu='git submodule update --recursive'
