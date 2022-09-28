@@ -34,7 +34,13 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
-export TERMINAL=alacritty
-#export PATH=$HOME/bin:$PATH:$HOME/.local/share/applications/wine
+# start redshift
+if [ -f /usr/bin/redshift-gtk ]; then
+    redshift-gtk &
+fi
 
 exec i3
+
+systemctl --no-block --user start xsession.target
+systemctl --user import-environment PATH DBUS_SESSION_BUS_ADDRESS
+
