@@ -44,7 +44,7 @@ exec --no-startup-id nm-applet
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec alacritty --working-directory $(xcwd)
+bindsym $mod+Return exec zutty --working-directory $(xcwd)
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -232,3 +232,6 @@ bindsym $mod+Shift+i mark --add "swapee"; mode "swap"
 bar {
         status_command i3status
 }
+# for_window [instance="origin.exe"] floating enable
+for_window [title="^Origin$"] floating enable, fullscreen disable
+for_window [title="^origin$"] floating enable, fullscreen disable
