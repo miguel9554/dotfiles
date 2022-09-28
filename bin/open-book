@@ -4,7 +4,9 @@ open_book() {
   BOOKS_DIR="/home/miguel/libros"
   local book_name
   book_name=$(find $BOOKS_DIR -type f -printf "%f\n" | fzf-tmux)
-  mimeo "$BOOKS_DIR/$book_name"
+  if [ ! -z "$book_name" -a "$book_name" != " " ]; then
+    mimeo "$BOOKS_DIR/$book_name"
+  fi
 }
 
 open_book

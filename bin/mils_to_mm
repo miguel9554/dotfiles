@@ -1,0 +1,3 @@
+#!/bin/sh
+mils=$1
+awk "BEGIN {one_mm_over_mil=0.0254; mils=${mils}; mm=one_mm_over_mil*mils; print mm}"
