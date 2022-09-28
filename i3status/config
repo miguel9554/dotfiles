@@ -16,6 +16,9 @@ order += "ethernet _first_"
 order += "disk /"
 order += "disk /home"
 order += "disk /mnt/data"
+order += "disk /mnt/data/fast"
+order += "disk /mnt/hdd"
+order += "disk /mnt/hdd2"
 order += "load"
 order += "memory"
 order += "volume master"
@@ -36,6 +39,19 @@ disk "/home" {
 
 disk "/mnt/data" {
         format = "/mnt/data/: %avail"
+}
+
+disk "/mnt/data/fast" {
+        format = "/mnt/data/fast/: %avail"
+}
+
+disk "/mnt/hdd" {
+        format = "/mnt/hdd/: %avail"
+}
+
+
+disk "/mnt/hdd2" {
+        format = "/mnt/hdd2/: %avail"
 }
 
 load {
