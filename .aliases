@@ -1,4 +1,4 @@
-# linux utils
+# various
 alias ls='ls --color=auto'
 alias ll='ls -lh'
 alias lla='ll -a'
@@ -7,6 +7,9 @@ alias b='cd -'
 alias xo='xdg-open'
 alias ob='open-book'
 alias su='systemctl --user'
+alias bc='sudo bluetoothctl'
+alias m='mimeo'
+alias d='dragon-drop'
 
 # vim
 alias vrc='vim ~/.vim/vimrc'
@@ -25,6 +28,7 @@ alias k='kubectl'
 
 # ranger
 alias ranger='RANGER_LOAD_DEFAULT_RC=FALSE ranger'
+alias ra='ranger'
 
 # git
 alias gs='git status'
