@@ -1,3 +1,6 @@
+" leader
+let mapleader = ' '
+
 " Para números de línea relativos
 set number relativenumber
 set nu rnu
@@ -16,8 +19,7 @@ set wildmenu
 set hidden
 
 " Para cambiar de directorio automáticamente
-set autochdir
-let g:netrw_keepdir=0
+" set autochdir
 
 " Para highlightear las búsquedas, y que sea case insensitive a menos que haya
 " una mayúscula
@@ -44,12 +46,18 @@ set pastetoggle=<F3>
 
 " Para no ver archivos swp en netrw
 let g:netrw_list_hide= '.*\.swp$'
+" Para cambiar dir con netrw
+"let g:netrw_keepdir = 0
 
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" prevent Rg from matching filenames
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+" use rg to look for files
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden'
+" find files
+nnoremap <silent> <Leader>f :Files<CR>
+" map Rg
+nnoremap <silent> <Leader>g :Rg<CR>
+
 
 " colors
 " set termguicolors
@@ -61,8 +69,6 @@ endif
 
 " archivos .conf.template con sintaxis nginx
 autocmd BufNewFile,BufRead *.conf.template set syntax=nginx
-
-let g:ale_completion_enabled = 0
 
 " Plugins
 " plug.vim install
@@ -87,7 +93,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'sirver/ultisnips'
 Plug 'honza/vim-snippets'
 
-Plug 'eslint/eslint'
+"Plug 'eslint/eslint'
 "Plug 'dense-analysis/ale'
 "Plug 'autozimu/LanguageClient-neovim', {
     "\ 'branch': 'next',
@@ -109,6 +115,15 @@ Plug 'junegunn/fzf.vim'
 Plug 'bluz71/vim-nightfly-guicolors'
 Plug 'ParamagicDev/vim-medic_chalk'
 
+"Plug 'jelera/vim-javascript-syntax'
+Plug 'yuezk/vim-js'
+Plug 'maxmellon/vim-jsx-pretty'
+
+Plug 'othree/html5.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'evanleck/vim-svelte', {'branch': 'main'}
+
+Plug 'khaveesh/vim-fish-syntax'
 call plug#end()
 
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | silent! pclose | endif
