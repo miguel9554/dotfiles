@@ -36,10 +36,11 @@ fi
 
 while true
 do
-	VOL=$(amixer get Master | tail -1 | sed 's/.*\[\([0-9]*%\)\].*/\1/')
+	VOL="VOL: $(amixer get Master | tail -1 | sed 's/.*\[\([0-9]*%\)\].*/\1/')"
 	LOCALTIME=$(date +%Y-%m-%dT%H:%M)
-        xsetroot -name "$VOL $LOCALTIME"
-	sleep 20s
+        BAT="BAT: $(acpi | awk '{print $4}' | sed s/,//)"
+        xsetroot -name "$BAT | $VOL | $LOCALTIME"
+	sleep 1s
 done &
 
 # start redshift
@@ -48,7 +49,3 @@ if [ -f /usr/bin/redshift-gtk ]; then
 fi
 
 exec dwm
-
-systemctl --no-block --user start xsession.target
-systemctl --user import-environment PATH DBUS_SESSION_BUS_ADDRESS
-
