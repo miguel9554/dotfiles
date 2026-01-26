@@ -15,7 +15,6 @@ function! TrimWhiteSpace()
     %s/\s\+$//e
 endfunction
 
-
 " Para indentar con 4 espacios, y no con tab
 set expandtab
 set shiftwidth=4
@@ -48,9 +47,6 @@ runtime ftplugin/man.vim
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 
-" search word but don't jump
-nmap <silent> * "syiw<Esc>: let @/ = @s<CR>
-
 " self explanatory
 set pastetoggle=<F3>
 
@@ -73,12 +69,9 @@ if isdirectory($HOME . '/.vim/.undo') == 0
 endif
 set undodir=~/.vim/.undo//
 
-" setlocal noswapfile
+au FileType javascript,typescript,typescriptreact setlocal sw=2 ts=2 sts=2 expandtab
 
-" Para no ver archivos swp en netrw
-let g:netrw_list_hide= '.*\.swp$'
-" Para cambiar dir con netrw
-let g:netrw_keepdir = 0
+" setlocal noswapfile
 
 " prevent Rg from matching filenames
 command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
@@ -86,6 +79,7 @@ command! -bang -nargs=* Rgf call fzf#vim#grep("rg --column --line-number --no-he
 " command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".string(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 " command! -bang -nargs=? -complete=dir Files call ZfSelectFile()
 let g:fzf_commits_log_options = 'git log --graph --all --decorate --oneline --pretty="%C(auto)%h  %C(auto)%d (%C(Green)%cr%C(reset))%x09 %C(Cyan)%an: %C(reset)%s"'
+
 " find files
 nnoremap <silent> <Leader>f :Files<CR>
 " nnoremap <silent> <Leader>f :call ZfSelectFile()<CR>
@@ -93,9 +87,12 @@ nnoremap <silent> <Leader>F :FZF -q <C-R><C-W><CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 " map Rg
 nnoremap <silent> <Leader>g :Rg<CR>
+
 " Rg selected word
 :nnoremap <expr> <silent> <Leader>w ':Rg '.expand('<cword>').'<CR>'
 :nnoremap <expr> <silent> -w ':Rgf '.expand('<cword>').'<CR>'
+
+nnoremap <leader>l :BLines<CR>
 
 " archivos .conf.template con sintaxis nginx
 autocmd BufNewFile,BufRead *.conf.template set syntax=nginx
@@ -108,7 +105,6 @@ autocmd BufNewFile,BufRead *.conf.template set syntax=nginx
   "autocmd BufReadPost,BufWritePost *.log call TrimWhiteSpace()
 "augroup END
 
-
 " Plugins
 " plug.vim install
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -116,7 +112,6 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
-
 
 " plugins
 call plug#begin('~/.vim/plugged')
@@ -135,7 +130,7 @@ call plug#begin('~/.vim/plugged')
 
     " escape sequences
     " Plug 'vim-scripts/AnsiEsc.vim'
-    Plug 'powerman/vim-plugin-AnsiEsc'
+    " Plug 'powerman/vim-plugin-AnsiEsc'
 
     " todo syntax
     Plug 'freitass/todo.txt-vim'
@@ -152,6 +147,7 @@ call plug#begin('~/.vim/plugged')
 
     " replace netrw
     Plug 'justinmk/vim-dirvish'
+    " Plug 'tpope/vim-vinegar'
 
     " replace buggy YAML syntax
     Plug 'stephpy/vim-yaml'
@@ -182,8 +178,18 @@ call plug#begin('~/.vim/plugged')
     " LaTeX snippets for Vim using UltiSnips (downloads only tagged releases)
     Plug 'ckunte/latex-snippets-vim', { 'tag': '*' }
 
+    Plug 'pangloss/vim-javascript'
+    Plug 'maxmellon/vim-jsx-pretty'
+
+    Plug 'Konfekt/vim-DetectSpellLang'
+
     " Undo tree
     Plug 'mbbill/undotree'
+
+    Plug 'prabirshrestha/vim-lsp'
+    Plug 'mattn/vim-lsp-settings'
+    Plug 'prabirshrestha/asyncomplete.vim'
+    Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
 call plug#end()
 
@@ -275,10 +281,56 @@ hi TabNum term=bold cterm=bold ctermfg=16 ctermbg=145
 " to avoid unreadable dark blue
 set background=dark
 
+autocmd FileType tex setlocal spell
+set spelllang=en,es
+" Use aspell
+let g:detectspelllang_program = 'aspell'
+
+" Languages to test (order doesn't matter)
+let g:detectspelllang_langs = ['en', 'es']
+
+" How many lines around cursor to analyze
+let g:detectspelllang_lines = 40
+
+" Nice netrw
+" let g:netrw_banner=0
+" let g:netrw_liststyle=3
+" let g:netrw_fastbrowse=1
+" let g:netrw_keepdir = 0
+
 let g:loaded_netrwPlugin = 1
 command! -nargs=? -complete=dir Explore Dirvish % <args>
 command! -nargs=? -complete=dir Sexplore belowright split | silent Dirvish % <args>
-command! -nargs=? -complete=dir Vexplore leftabove vsplit | silent Dirvish % <args>
+command! -nargs=? -complete=dir Vexplore rightbelow vsplit | silent Dirvish % <args>
 au FileType dirvish nmap - <plug>(dirvish_up)
 
-autocmd FileType tex setlocal spell
+" Don't highlight word on cursor
+let g:lsp_document_highlight_enabled = 0
+
+" normal
+nnoremap gd :LspDefinition<CR>
+nnoremap gD :LspDeclaration<CR>
+nnoremap gi :LspImplementation<CR>
+nnoremap gr :LspReferences<CR>
+nnoremap gy :LspTypeDefinition<CR>
+
+" vertical split
+nnoremap Vgd :LspDefinition -vsplit<CR>
+nnoremap VgD :LspDeclaration -vsplit<CR>
+nnoremap Vgi :LspImplementation -vsplit<CR>
+nnoremap Vgr :LspReferences -vsplit<CR>
+nnoremap Vgy :LspTypeDefinition -vsplit<CR>
+
+" horizontal split
+nnoremap Hgd :LspDefinition -split<CR>
+nnoremap HgD :LspDeclaration -split<CR>
+nnoremap Hgi :LspImplementation -split<CR>
+nnoremap Hgr :LspReferences -split<CR>
+nnoremap Hgy :LspTypeDefinition -split<CR>
+
+" new tab
+nnoremap Tgd :tabnew \| LspDefinition<CR>
+nnoremap TgD :tabnew \| LspDeclaration<CR>
+nnoremap Tgi :tabnew \| LspImplementation<CR>
+nnoremap Tgr :tabnew \| LspReferences<CR>
+nnoremap Tgy :tabnew \| LspTypeDefinition<CR>
