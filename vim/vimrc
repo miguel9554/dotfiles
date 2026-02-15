@@ -191,6 +191,8 @@ call plug#begin('~/.vim/plugged')
     Plug 'prabirshrestha/asyncomplete.vim'
     Plug 'prabirshrestha/asyncomplete-lsp.vim'
 
+    Plug 'github/copilot.vim'
+
 call plug#end()
 
 let g:UltiSnipsExpandTrigger = '<tab>'
@@ -307,30 +309,95 @@ au FileType dirvish nmap - <plug>(dirvish_up)
 " Don't highlight word on cursor
 let g:lsp_document_highlight_enabled = 0
 
-" normal
-nnoremap gd :LspDefinition<CR>
-nnoremap gD :LspDeclaration<CR>
-nnoremap gi :LspImplementation<CR>
-nnoremap gr :LspReferences<CR>
-nnoremap gy :LspTypeDefinition<CR>
+" --- vim-lsp diagnostics: show only on current line ---
 
-" vertical split
-nnoremap Vgd :LspDefinition -vsplit<CR>
-nnoremap VgD :LspDeclaration -vsplit<CR>
-nnoremap Vgi :LspImplementation -vsplit<CR>
-nnoremap Vgr :LspReferences -vsplit<CR>
-nnoremap Vgy :LspTypeDefinition -vsplit<CR>
+" Enable diagnostics
+" let g:lsp_diagnostics_enabled = 1
 
-" horizontal split
-nnoremap Hgd :LspDefinition -split<CR>
-nnoremap HgD :LspDeclaration -split<CR>
-nnoremap Hgi :LspImplementation -split<CR>
-nnoremap Hgr :LspReferences -split<CR>
-nnoremap Hgy :LspTypeDefinition -split<CR>
+" Show floating message ONLY when cursor is on the line
+" let g:lsp_diagnostics_float_cursor = 1
+" let g:lsp_diagnostics_float_delay = 0
 
-" new tab
-nnoremap Tgd :tabnew \| LspDefinition<CR>
-nnoremap TgD :tabnew \| LspDeclaration<CR>
-nnoremap Tgi :tabnew \| LspImplementation<CR>
-nnoremap Tgr :tabnew \| LspReferences<CR>
-nnoremap Tgy :tabnew \| LspTypeDefinition<CR>
+" Disable inline virtual text
+" let g:lsp_diagnostics_virtual_text_enabled = 0
+
+" Keep gutter signs + underline highlights
+" let g:lsp_diagnostics_signs_enabled = 1
+" let g:lsp_diagnostics_highlights_enabled = 1
+
+" Open LSP location in tab, reusing existing tab if buffer is already open
+function! LspGotoTab(cmd) abort
+    let l:orig_tab = tabpagenr()
+    let l:orig_buf = bufnr('%')
+    let l:orig_view = winsaveview()
+
+    execute 'tab Lsp' . a:cmd
+
+    let l:cur_tab = tabpagenr()
+    let l:target_buf = bufnr('%')
+    let l:target_line = line('.')
+    let l:target_col = col('.')
+
+    " If still in same tab (LSP found nothing or same file)
+    if l:cur_tab == l:orig_tab
+        return
+    endif
+
+    " Restore original tab's buffer if it was changed
+    execute 'tabnext ' . l:orig_tab
+    if bufnr('%') != l:orig_buf
+        silent execute 'buffer ' . l:orig_buf
+        call winrestview(l:orig_view)
+    endif
+
+    " Check if target buffer exists in another tab (besides the new one)
+    let l:existing_tab = -1
+    let l:existing_win = -1
+    for l:tabnr in range(1, tabpagenr('$'))
+        if l:tabnr == l:cur_tab
+            continue
+        endif
+        let l:buflist = tabpagebuflist(l:tabnr)
+        let l:idx = index(l:buflist, l:target_buf)
+        if l:idx != -1
+            let l:existing_tab = l:tabnr
+            let l:existing_win = l:idx + 1
+            break
+        endif
+    endfor
+
+    if l:existing_tab != -1
+        " Close the new tab and go to existing one
+        execute 'tabclose ' . l:cur_tab
+        if l:existing_tab > l:cur_tab
+            let l:existing_tab -= 1
+        endif
+        execute 'tabnext ' . l:existing_tab
+        execute l:existing_win . 'wincmd w'
+        call cursor(l:target_line, l:target_col)
+    else
+        " Go back to the new tab
+        execute 'tabnext ' . l:cur_tab
+    endif
+endfunction
+
+for [key, cmd] in items({
+\ 'd': 'Definition',
+\ 'D': 'Declaration',
+\ 'i': 'Implementation',
+\ 'r': 'References',
+\ 'y': 'TypeDefinition',
+\ })
+  execute 'nnoremap g'.key.' :Lsp'.cmd.'<CR>'
+  execute 'nnoremap Vg'.key.' :vertical Lsp'.cmd.'<CR>'
+  execute 'nnoremap Hg'.key.' :belowright Lsp'.cmd.'<CR>'
+  execute 'nnoremap Tg'.key.' :call LspGotoTab("'.cmd.'")<CR>'
+endfor
+nnoremap <silent> <Leader>r :LspRename<CR>
+
+nmap [g <plug>(lsp-previous-diagnostic)
+nmap ]g <plug>(lsp-next-diagnostic)
+nnoremap <leader>dq :LspDiagnostics<CR>:copen<CR>
+
+" Copy: break <file>:<line> to system clipboard (filename only)
+nnoremap <leader>d :let @+ = 'break ' . expand('%:t') . ':' . line('.')<CR>
