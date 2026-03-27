@@ -401,3 +401,51 @@ nnoremap <leader>dq :LspDiagnostics<CR>:copen<CR>
 
 " Copy: break <file>:<line> to system clipboard (filename only)
 nnoremap <leader>d :let @+ = 'break ' . expand('%:t') . ':' . line('.')<CR>
+
+function! LspDiagnosticsOff()
+    let b:lsp_diagnostics_enabled = 0
+    edit
+    echo "LSP diagnostics OFF (buffer)"
+endfunction
+
+function! LspDiagnosticsOn()
+    let b:lsp_diagnostics_enabled = 1
+    edit
+    echo "LSP diagnostics ON (buffer)"
+endfunction
+
+nnoremap <leader>tdo :call LspDiagnosticsOff()<CR>
+nnoremap <leader>tdi :call LspDiagnosticsOn()<CR>
+
+function! LspDiagStatus() abort
+    let l:enabled = get(b:, 'lsp_diagnostics_enabled',
+          \ get(g:, 'lsp_diagnostics_enabled', 1))
+    return l:enabled ? 'LSP:ON' : 'LSP:OFF'
+endfunction
+
+let g:lightline = {
+\ 'active': {
+\   'right': [ [ 'lineinfo' ],
+\              [ 'percent' ],
+\              [ 'lspdiag', 'fileformat', 'fileencoding', 'filetype' ] ]
+\ },
+\ 'component_function': {
+\   'lspdiag': 'LspDiagStatus'
+\ }
+\ }
+  let g:lsp_settings = {
+  \  'pylsp-all': {
+  \    'workspace_config': {
+  \      'pylsp': {
+  \        'plugins': {
+  \          'pycodestyle': {
+  \            'ignore': ['E501', 'E241'],
+  \          },
+  \          'flake8': {
+  \            'ignore': ['E501'],
+  \          },
+  \        },
+  \      },
+  \    },
+  \  },
+  \}
