@@ -230,7 +230,10 @@ set noshowmode
 
 "let g:localvimrc_whitelist = '/home/mperezandrade/projects/980151/.lvimrc'
 "let g:localvimrc_whitelist = ['/native/mperezandrade/projects/980151/.lvimrc', '/native/mperezandrade/projects/dac/.lvimrc']
-let g:localvimrc_whitelist = '/home/mperezandrade/projects/\(980151\|980161\|178021\|sdm\|dsp_pkg\)/.*'
+let g:localvimrc_whitelist = [
+  \ '/home/mperezandrade/projects/\(980151\|980161\|178021\|sdm\|dsp_pkg\)/.*',
+  \ '/home/miguel/dev/asic/compiler/.*'
+  \ ]
 
 function! MyTabLine()
     let s = ''
