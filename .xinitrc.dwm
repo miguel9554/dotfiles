@@ -47,8 +47,9 @@ if [ -f /usr/bin/redshift-gtk ]; then
     redshift &
 fi
 
+/usr/local/bin/monitor-hotplug.sh &
+
 exec dwm
 
 systemctl --no-block --user start xsession.target
 systemctl --user import-environment PATH DBUS_SESSION_BUS_ADDRESS
-
