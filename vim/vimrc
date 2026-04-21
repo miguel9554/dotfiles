@@ -90,7 +90,6 @@ nnoremap <silent> <Leader>g :Rg<CR>
 
 " Rg selected word
 :nnoremap <expr> <silent> <Leader>w ':Rg '.expand('<cword>').'<CR>'
-:nnoremap <expr> <silent> -w ':Rgf '.expand('<cword>').'<CR>'
 
 nnoremap <leader>l :BLines<CR>
 
